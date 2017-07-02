@@ -51,6 +51,7 @@ var CSSViewer_pColorBg = new Array(
 	'background-attachment', 
 	'background-color', 
 	'background-image',
+	'background-size',
 	'background-position',
 	'background-repeat',
 	'color'
@@ -346,11 +347,13 @@ function ShowCSSCategory(category)
 
 function UpdatefontText(element)
 {
+	var tmp = '';
 	// Font
 	SetCSSProperty(element, 'font-family');
 	SetCSSProperty(element, 'font-size');
 
-	SetCSSPropertyIf(element, 'font-weight'    , GetCSSProperty(element, 'font-weight') != '400');
+	SetCSSPropertyIf(element, 'font-weight'    , (tmp = GetCSSProperty(element, 'font-weight')) && tmp!= '400' && tmp != 'normal');
+	//console.log((tmp = GetCSSProperty(element, 'font-weight'));
 	SetCSSPropertyIf(element, 'font-variant'   , GetCSSProperty(element, 'font-variant') != 'normal');
 	SetCSSPropertyIf(element, 'font-style'     , GetCSSProperty(element, 'font-style') != 'normal');
 	
@@ -363,11 +366,12 @@ function UpdatefontText(element)
 	SetCSSPropertyIf(element, 'text-transform' , GetCSSProperty(element, 'text-transform') != 'none');
 	SetCSSPropertyIf(element, 'vertical-align' , GetCSSProperty(element, 'vertical-align') != 'baseline');
 	SetCSSPropertyIf(element, 'white-space'    , GetCSSProperty(element, 'white-space') != 'normal');
-	SetCSSPropertyIf(element, 'word-spacing'   , GetCSSProperty(element, 'word-spacing') != 'normal');
+	SetCSSPropertyIf(element, 'word-spacing'   , (tmp = GetCSSProperty(element, 'word-spacing')) && tmp != 'normal' && tmp != '0px');
 }
 
 function UpdateColorBg(element)
 {
+	var tmp = '';
 	// Color
 	SetCSSPropertyValue(element, 'color', RGBToHex(GetCSSProperty(element, 'color')));
 
@@ -375,15 +379,17 @@ function UpdateColorBg(element)
 	SetCSSPropertyValueIf(element, 'background-color', RGBToHex(GetCSSProperty(element, 'background-color')), GetCSSProperty(element, 'background-color') != 'transparent');
 	SetCSSPropertyIf(element, 'background-attachment', GetCSSProperty(element, 'background-attachment') != 'scroll');
 	SetCSSPropertyValueIf(element, 'background-image', GetFileName(GetCSSProperty(element, 'background-image')), GetCSSProperty(element, 'background-image') != 'none');
-	SetCSSPropertyIf(element, 'background-position'  , GetCSSProperty(element, 'background-position') != '');
+	SetCSSPropertyIf(element, 'background-size'  , GetCSSProperty(element, 'background-size') != 'auto');
+	SetCSSPropertyIf(element, 'background-position'  , (tmp = GetCSSProperty(element, 'background-position')) && tmp != '0% 0%');
 	SetCSSPropertyIf(element, 'background-repeat'    , GetCSSProperty(element, 'background-repeat') != 'repeat');
 }
 
 function UpdateBox(element)
 {
+	var tmp = '';
 	// Width/Height
-	SetCSSPropertyIf(element, 'height', RemoveExtraFloat(GetCSSProperty(element, 'height')) != 'auto');
-	SetCSSPropertyIf(element, 'width', RemoveExtraFloat(GetCSSProperty(element, 'width')) != 'auto');
+	SetCSSPropertyIf(element, 'height', (tmp = GetCSSProperty(element, 'height')) && tmp != 'auto' &&RemoveExtraFloat(tmp));
+	SetCSSPropertyIf(element, 'width', (tmp = GetCSSProperty(element, 'width')) && tmp != 'auto' &&RemoveExtraFloat(tmp));
 
 	// Border
 	var borderTop    = RemoveExtraFloat(GetCSSProperty(element, 'border-top-width')) + ' ' + GetCSSProperty(element, 'border-top-style') + ' ' + RGBToHex(GetCSSProperty(element, 'border-top-color'));
